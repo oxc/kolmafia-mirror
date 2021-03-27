@@ -1,0 +1,5 @@
+; This file is used internally by git-svn
+; You should not have to edit it
+[svn-remote "svn"]
+	reposRoot = https://svn.code.sf.net/p/kolmafia/code
+	uuid = b29ace70-8910-0410-8dcc-aa2fc6433167
