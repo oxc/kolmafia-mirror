@@ -1,0 +1,56 @@
+name: Build oxc daily jar
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build_daily:
+    name: Build daily jar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install requirements
+        run: |
+          sudo add-apt-repository --yes ppa:git-core/ppa
+          sudo apt-get update
+          sudo apt-get install --yes git-svn
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # we need the svn meta so that the build process can detect the SVN revision.
+      # we'll just set the git-svn tag to the latest merged commit from upstream.
+      - name: Checkout svn metadata
+        uses: actions/checkout@v2
+        with:
+          ref: svn-meta
+          path: .git/svn
+      - name: Init git-svn remote
+        run: |
+          git svn init https://svn.code.sf.net/p/kolmafia/code
+          git update-ref refs/remotes/git-svn "$(git merge-base HEAD origin/upstream)"
+
+      - name: Get revision
+        id: revision
+        run: |
+          REVISION=$(ant version | grep -Poe "(?<=Current revision: )\S*")
+          echo "::set-output name=revision::$REVISION"
+          echo "::set-output name=filename::KoLmafia-$REVISION.jar"
+
+      - name: Build daily jar
+        run: |
+          ant daily
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "KoLmafia ${{ steps.revision.outputs.revision }}"
+          files: |
+            dist/${{ steps.revision.outputs.filename }}

@@ -61,7 +61,9 @@ All code copyright the respective sourcecode rightsholders.  Please see copyrigh
 	<!--  guesses the SVN revision of the local repository  -->
 	<!-- ================================================== -->
 
-	<target name="version" depends="svn-version,gitsvn-version" if="revision">
+	<target name="version" depends="svn-version,gitsvn-version" if="svnrevision">
+
+		<property name="revision" value="${svnrevision}-oxc-${gitrevision}" />
 
 		<echo message="Current revision: ${revision}" />
 
@@ -73,7 +75,7 @@ All code copyright the respective sourcecode rightsholders.  Please see copyrigh
 
 	<target name="svn-version" if="using.svn">
 
-		<exec executable="svnversion" outputproperty="revision" failifexecutionfails="false">
+		<exec executable="svnversion" outputproperty="svnrevision" failifexecutionfails="false">
 			<arg value="-n" />
 			<arg value="${root}" />
 		</exec>
@@ -86,9 +88,14 @@ All code copyright the respective sourcecode rightsholders.  Please see copyrigh
 
 	<target name="gitsvn-version" if="using.gitsvn">
 
-		<exec executable="sh" outputproperty="revision" failifexecutionfails="false">
+		<exec executable="sh" outputproperty="svnrevision" failifexecutionfails="false">
 			<arg value="-c" />
 			<arg value="git svn info | grep '^Revision: [0-9]*$' | awk '{ print $2 }'" />
+		</exec>
+
+		<exec executable="sh" outputproperty="gitrevision" failifexecutionfails="false">
+			<arg value="-c" />
+			<arg value="git rev-list --count git-svn.." />
 		</exec>
 
 	</target>
