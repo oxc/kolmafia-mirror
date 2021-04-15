@@ -21888,3 +21888,9 @@ r20682
 r20683
 r20684
 r20685
+r20686
+r20687
+  +file_prop: src/jar/jansi-2.1.0.jar svn:mime-type application/octet-stream
+r20688
+  -empty_dir: src/jar/jansi-2.1.0.jar
+  +file_prop: src/jar/jansi-2.3.2.jar svn:mime-type application/octet-stream
