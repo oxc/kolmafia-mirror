@@ -21990,3 +21990,6 @@ r20780
 r20781
 r20782
 r20783
+r20784
+r20785
+  -empty_dir: src/net/sourceforge/kolmafia/request/FireworksShopRequest.java
