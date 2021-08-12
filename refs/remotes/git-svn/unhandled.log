@@ -22023,3 +22023,5 @@ r20812
 r20813
 r20814
 r20815
+r20816
+  -empty_dir: lib/testjar/junit-4.12.jar
