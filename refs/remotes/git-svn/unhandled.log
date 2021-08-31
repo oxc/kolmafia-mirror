@@ -22084,3 +22084,6 @@ r20869
 r20870
 r20871
 r20872
+r20873
+r20874
+  -empty_dir: lib/testjar/hamcrest-core-1.3.jar
